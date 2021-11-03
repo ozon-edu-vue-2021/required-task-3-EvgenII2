@@ -12,7 +12,10 @@
 </template>
 
 <script>
+
+
 export default {
+    
     props: {
         color: {
             type: String,
