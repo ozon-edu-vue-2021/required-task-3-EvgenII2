@@ -27,6 +27,7 @@
                         v-if="legend.length > 0"
                         class="legend__items"
                     >
+                    <Draggable v-model="legend">
                         <LegendItem
                             v-for="(item, index) in legend"
                             :key="index"
@@ -35,6 +36,7 @@
                             :counter="item.counter"
                             class="legend__item"
                         />
+                    </Draggable>
                     </div>
                     <span
                         v-else
@@ -44,7 +46,7 @@
                     </span>
                 </div>
                 <div class="legend__chart">
-                    <!-- chart -->
+                    <PieChart ref="chart"/>
                 </div>
             </div>
             <div
@@ -65,8 +67,10 @@
 </template>
 
 <script>
+import Draggable from "vuedraggable";
 import LegendItem from "./SideMenu/LegendItem.vue";
 import PersonCard from "./SideMenu/PersonCard.vue";
+import { Doughnut as PieChart } from "vue-chartjs";
 import legend from "@/assets/data/legend.json";
 
 export default {
@@ -83,6 +87,8 @@ export default {
     components: {
         LegendItem,
         PersonCard,
+        Draggable,
+        PieChart,
     },
     data() {
         return {
@@ -92,7 +98,35 @@ export default {
     created() {
         this.loadLegend();
     },
+    mounted() {
+        this.makeChart();
+    },
     methods: {
+        makeChart() {
+            const legendChartData = {
+                labels: this.legend.map((it) => it.text),
+                datasets: [
+                    {
+                        label: "Легенда",
+                        backgroundColor: this.legend.map(
+                            (legendItem) => legendItem.color
+                        ),
+                        data: this.legend.map(
+                            (legendItem) => legendItem.counter
+                        ),
+                    },
+                ],
+            };
+
+            const options = {
+                borderWidth: "10px",
+                legend: {
+                    display: false,
+                },
+            };
+
+            this.$refs.chart.renderChart(legendChartData, options);
+        },        
         loadLegend() {
             this.legend = legend;
         },
