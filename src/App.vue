@@ -18,7 +18,7 @@ import SideMenu from "./components/SideMenu.vue";
 export default {
   name: "App",
   data: () => {
-    return { person: {}, isUserOpenned: false };
+    return { person: null, isUserOpenned: false };
   },
   components: {
     Map,
@@ -27,8 +27,11 @@ export default {
   methods: {
     setPersonToSideMenu(person) {
       this.person = person;
-      if (this.person) this.isUserOpenned = true;
-      else this.isUserOpenned = false;
+      if (this.person) {
+        this.isUserOpenned = true;
+      } else {
+        this.isUserOpenned = false;
+      }
     },
     closePersonCard(isUserOpenned) {
       this.person = null;
