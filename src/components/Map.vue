@@ -39,8 +39,8 @@ export default {
     this.isLoading = true;
 
     this.svg = d3.select(this.$refs.svg);
-    this.svg.on("click", () => {
-      this.handleClickOnMap();
+    this.svg.on("click", (ev) => {
+      this.handleClickOnMap(ev);
     });
     this.g = this.svg.select("g");
     this.tableSVG = d3.select(this.$refs.table);
@@ -57,22 +57,16 @@ export default {
         .append("g")
         .classed("groupPlaces", true);
       this.tables.map((table) => {
-        const onClick = (ev) => {
-          this.handleClickOnTable(table._id);
-          ev.stopPropagation();
-        };
-
         const targetSeat = svgTablesGroupPlace
           .append("g")
           .attr("transform", `translate(${table.x}, ${table.y}) scale(0.5)`)
-          .attr("id", table._id)
-          .on("click", onClick)
           .classed("employer-place", true);
 
         targetSeat
           .append("g")
           .attr("transform", `rotate(${table.rotate || 0})`)
           .attr("group_id", table.group_id)
+          .attr("id", table._id)
           .classed("table", true)
           .html(this.tableSVG.html())
           .attr(
@@ -82,16 +76,16 @@ export default {
           );
       });
     },
-    handleClickOnTable(id) {
+    handleClickOnMap(ev) {
       this.$emit(
         "setPerson",
         people.find((person) => {
-          return person.tableId === id;
+          return (
+            person.tableId ===
+            parseInt(ev.target.parentElement.parentElement.id)
+          );
         })
       );
-    },
-    handleClickOnMap() {
-      this.$emit("setPerson", null);
     },
   },
 };

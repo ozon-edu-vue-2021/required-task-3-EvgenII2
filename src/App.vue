@@ -5,7 +5,7 @@
       <SideMenu
         v-bind:person="person"
         v-bind:isUserOpenned="isUserOpenned"
-        v-on:update="closePersonCard"
+        v-on:update="setPersonToSideMenu"
       />
     </div>
   </div>
@@ -27,15 +27,7 @@ export default {
   methods: {
     setPersonToSideMenu(person) {
       this.person = person;
-      if (this.person) {
-        this.isUserOpenned = true;
-      } else {
-        this.isUserOpenned = false;
-      }
-    },
-    closePersonCard(isUserOpenned) {
-      this.person = null;
-      this.isUserOpenned = isUserOpenned;
+      this.isUserOpenned = !!this.person;
     },
   },
 };

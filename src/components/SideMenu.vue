@@ -108,7 +108,7 @@ export default {
       this.legend = legend;
     },
     closeProfile() {
-      this.$emit("update", false);
+      this.$emit("update", null);
     },
   },
 };
