@@ -1,7 +1,6 @@
 <template>
   <div class="map">
     <h3>Карта офиса</h3>
-
     <div v-if="!isLoading" class="map-root">
       <MapSVG ref="svg" />
       <Table v-show="false" ref="table" />
